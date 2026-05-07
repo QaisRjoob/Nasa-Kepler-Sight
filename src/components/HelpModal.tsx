@@ -10,7 +10,7 @@ export const HelpModal = () => {
       {/* Floating help button — bottom right */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600/80 hover:bg-indigo-500 backdrop-blur-md border border-indigo-400/40 shadow-2xl transition-all duration-300 hover:scale-110"
+        className="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600/80 hover:bg-indigo-500 backdrop-blur-md border border-indigo-400/40 shadow-2xl transition-all duration-300 hover:scale-110"
         aria-label="Help"
         title="How to use this app"
       >
