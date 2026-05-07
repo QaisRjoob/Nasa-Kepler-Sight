@@ -61,9 +61,9 @@ export const Dashboard = () => {
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-8 left-8 z-20 flex gap-4"
+      className="absolute top-4 left-2 right-2 sm:top-8 sm:left-8 sm:right-auto z-20 flex gap-2 sm:gap-4 overflow-x-auto pb-1 sm:pb-0"
     >
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 w-[200px]">
+      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
             <Database className="w-4 h-4 text-blue-400" />
@@ -80,7 +80,7 @@ export const Dashboard = () => {
         </CardContent>
       </Card>
 
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-green-500/20 transition-all duration-300 w-[200px]">
+      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-green-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
             <Target className="w-4 h-4 text-green-400" />
@@ -97,7 +97,7 @@ export const Dashboard = () => {
         </CardContent>
       </Card>
 
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-red-500/20 transition-all duration-300 w-[200px]">
+      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-red-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
             <XCircle className="w-4 h-4 text-red-400" />

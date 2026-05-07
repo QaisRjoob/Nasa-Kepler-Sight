@@ -50,7 +50,7 @@ export const HelpModal = () => {
                     className="text-gray-500 hover:text-white transition-colors"
                     aria-label="Close"
                   >
-                    <X className="w-5 w-5" />
+                    <X className="w-5 h-5" />
                   </button>
                 </div>
 

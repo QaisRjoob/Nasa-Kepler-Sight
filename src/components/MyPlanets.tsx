@@ -101,14 +101,14 @@ export const MyPlanets = () => {
   };
 
   return (
-    <div className="w-full max-w-7xl mx-auto p-8">
+    <div className="w-full max-w-7xl mx-auto p-4 sm:p-8">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8 flex items-center justify-between"
+        className="mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
       >
         <div>
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-2">
+          <h1 className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent mb-2">
             My Planets Collection
           </h1>
           <p className="text-gray-400">
@@ -271,7 +271,7 @@ export const MyPlanets = () => {
 
       {/* Details Dialog */}
       <AlertDialog open={showDetails} onOpenChange={setShowDetails}>
-        <AlertDialogContent className="bg-card/95 backdrop-blur-lg border-purple-500/30 max-w-3xl max-h-[90vh] overflow-y-auto">
+        <AlertDialogContent className="bg-card/95 backdrop-blur-lg border-purple-500/30 w-[95vw] sm:max-w-3xl max-h-[90vh] overflow-y-auto"style={{maxWidth: undefined}}>
           <AlertDialogHeader>
             <AlertDialogTitle className="text-2xl flex items-center gap-2">
               <Globe className="w-6 h-6 text-purple-400" />
@@ -303,7 +303,7 @@ export const MyPlanets = () => {
                       <Orbit className="w-5 h-5" />
                       Orbital Parameters
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-gray-400">Orbital Period</p>
                         <p className="text-white text-lg font-semibold">
@@ -343,7 +343,7 @@ export const MyPlanets = () => {
                       <Sparkles className="w-5 h-5" />
                       Planetary Properties
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-gray-400">Planet Radius</p>
                         <p className="text-white text-lg font-semibold">
@@ -389,7 +389,7 @@ export const MyPlanets = () => {
                       <Globe className="w-5 h-5" />
                       Host Star Properties
                     </h3>
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       <div>
                         <p className="text-gray-400">Effective Temperature</p>
                         <p className="text-white text-lg font-semibold">
