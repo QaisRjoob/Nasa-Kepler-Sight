@@ -142,9 +142,22 @@ async def train_model(config: TrainingConfig):
         
         # Save model
         model.save_model()
-        
+
+        # Save metrics to disk so GET /api/metrics can serve them
+        metrics_save_path = Path("./models/metrics.json")
+        metrics_save_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(metrics_save_path, 'w') as f:
+            json.dump({
+                "accuracy": metrics['accuracy'],
+                "precision": metrics['precision'],
+                "recall": metrics['recall'],
+                "f1_score": metrics['f1_score'],
+                "confusion_matrix": metrics['confusion_matrix'],
+                "model_type": metrics['model_type']
+            }, f, indent=2)
+
         model_trained = True
-        
+
         return MetricsResponse(
             accuracy=metrics['accuracy'],
             precision=metrics['precision'],
@@ -311,7 +324,6 @@ async def get_metrics():
         # Return stored metrics
         metrics_path = Path("./models/metrics.json")
         if metrics_path.exists():
-            import json
             with open(metrics_path, 'r') as f:
                 metrics = json.load(f)
             return metrics
@@ -320,7 +332,9 @@ async def get_metrics():
                 status_code=404,
                 detail="No metrics available. Train the model first."
             )
-    
+
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -387,7 +401,9 @@ async def get_model_info():
             "n_features": len(model.feature_names),
             "is_trained": model_trained
         }
-    
+
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
