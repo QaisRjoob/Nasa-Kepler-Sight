@@ -163,7 +163,7 @@ export const ExoplanetDataEntry = ({ onSuccess }: ExoplanetDataEntryProps = {}) 
         koi_model_snr: parseFloat(formData.koi_model_snr) || 0,
       };
 
-      const response = await fetch("http://localhost:8000/planets/predict-and-save", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/planets/predict-and-save`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

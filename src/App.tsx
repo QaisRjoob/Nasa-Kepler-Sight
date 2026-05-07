@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import MyPlanetsPage from "./pages/MyPlanetsPage";
 import { ExoplanetPage } from "./pages/ExoplanetPage";
+import { BackendStatusToast } from "./components/BackendStatusToast";
 
 const queryClient = new QueryClient();
 
@@ -15,6 +16,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <BackendStatusToast />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />

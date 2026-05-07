@@ -48,7 +48,7 @@ export const MyPlanets = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:8000/planets/list");
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/planets/list`);
       if (!response.ok) {
         throw new Error("Failed to fetch planets");
       }
@@ -65,7 +65,7 @@ export const MyPlanets = () => {
 
   const deletePlanet = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:8000/planets/${id}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/planets/${id}`, {
         method: "DELETE",
       });
       
