@@ -8,8 +8,8 @@ Built with React, Three.js, and Tailwind CSS.
 
 ## Live Demo
 
-> **Frontend App:** _Link will be added after deployment on Render_  
-> **Backend API:** _Link will be added after deployment on Render_
+> **Frontend App:** https://nasa-kepler-sight.onrender.com
+> **Backend API:** https://nasa-kepler-sight-backend.onrender.com
 
 ---
 
