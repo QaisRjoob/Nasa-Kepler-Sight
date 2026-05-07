@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
 import { ViewState } from "./SpaceJourney";
 import { Globe, Orbit, Sparkles, Boxes, Telescope, Eye, FlaskConical, Download, ExternalLink, X } from "lucide-react";
@@ -119,7 +120,8 @@ export const Controls = ({ currentView, onViewChange }: ControlsProps) => {
         </div>
       </div>
 
-      {/* Modal */}
+      {/* Modal — rendered in a portal so fixed positioning is always relative to the viewport */}
+      {createPortal(
       <AnimatePresence>
         {modalOpen && (
           <>
@@ -223,6 +225,7 @@ export const Controls = ({ currentView, onViewChange }: ControlsProps) => {
           </>
         )}
       </AnimatePresence>
+      , document.body)}
     </>
   );
 };
