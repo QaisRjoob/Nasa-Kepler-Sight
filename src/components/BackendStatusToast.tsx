@@ -43,7 +43,7 @@ export const BackendStatusToast = () => {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 40, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-6 right-6 z-50 flex items-start gap-3 rounded-xl border border-red-500/40 bg-black/80 backdrop-blur-md px-4 py-4 shadow-2xl max-w-xs"
+          className="fixed bottom-6 left-6 z-50 flex items-start gap-3 rounded-xl border border-red-500/40 bg-black/80 backdrop-blur-md px-4 py-4 shadow-2xl max-w-xs"
         >
           <WifiOff className="mt-0.5 h-5 w-5 shrink-0 text-red-400" />
           <div className="flex-1 text-sm">

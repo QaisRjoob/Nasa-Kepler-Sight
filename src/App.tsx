@@ -8,6 +8,7 @@ import NotFound from "./pages/NotFound";
 import MyPlanetsPage from "./pages/MyPlanetsPage";
 import { ExoplanetPage } from "./pages/ExoplanetPage";
 import { BackendStatusToast } from "./components/BackendStatusToast";
+import { HelpModal } from "./components/HelpModal";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BackendStatusToast />
+      <HelpModal />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
