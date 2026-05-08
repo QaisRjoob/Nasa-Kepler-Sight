@@ -362,9 +362,9 @@ const SpaceScene = () => {
 export const SpaceBackground3D = () => {
   return (
     <div className="fixed inset-0 -z-10">
-      <Canvas 
+      <Canvas
         camera={{ position: [0, 0, 10], fov: 75 }}
-        gl={{ antialias: true, alpha: false }}
+        gl={{ antialias: false, alpha: false, powerPreference: "high-performance" }}
       >
         <SpaceScene />
       </Canvas>

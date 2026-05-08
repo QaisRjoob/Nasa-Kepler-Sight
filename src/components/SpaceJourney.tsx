@@ -23,29 +23,33 @@ import { ModelMetrics } from "./ModelMetrics";
 import { ModelMetricsPage } from "@/pages/ModelMetricsPage";
 import * as THREE from "three";
 
-// Cinematic Camera Controller for Exoplanet View
-const CinematicCamera = () => {
+// Moves + animates the camera whenever `view` changes — no Canvas remount needed
+const CameraController = ({ view }: { view: ViewState }) => {
   const { camera } = useThree();
-  const targetRotation = useRef(new THREE.Euler(0, 0, 0));
-  
+  const targets: Record<string, [number, number, number]> = {
+    earth:     [0,  0,  5],
+    solar:     [0, 10, 20],
+    galaxy:    [0, 25, 35],
+    universe:  [0,  0, 40],
+    exoplanet: [3,  2,  8],
+  };
+  const target = targets[view] ?? [0, 0, 5];
+  const targetRef = useRef(new THREE.Vector3(...target));
+  useEffect(() => { targetRef.current.set(...target); }, [view]);
+
   useFrame((state) => {
     const time = state.clock.elapsedTime;
-    
-    // Smooth cinematic drift
-    camera.position.x = 3 + Math.sin(time * 0.08) * 0.3;
-    camera.position.y = 2 + Math.cos(time * 0.1) * 0.2;
-    
-    // Slight rotation for cinematic feel
-    targetRotation.current.x = -0.15 + Math.sin(time * 0.05) * 0.03;
-    targetRotation.current.y = 0.3 + Math.cos(time * 0.07) * 0.05;
-    
-    // Smooth interpolation
-    camera.rotation.x += (targetRotation.current.x - camera.rotation.x) * 0.02;
-    camera.rotation.y += (targetRotation.current.y - camera.rotation.y) * 0.02;
-    
+    // Cinematic drift for exoplanet view
+    if (view === "exoplanet") {
+      targetRef.current.set(
+        3 + Math.sin(time * 0.08) * 0.3,
+        2 + Math.cos(time * 0.1) * 0.2,
+        8
+      );
+    }
+    camera.position.lerp(targetRef.current, 0.04);
     camera.updateProjectionMatrix();
   });
-  
   return null;
 };
 import { Navigation, X, Eye, Database, FileText, Upload, BarChart3 } from "lucide-react";
@@ -60,24 +64,6 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
   const [showExoplanetExplorer, setShowExoplanetExplorer] = useState(true);
   const [exoplanetUploadMethod, setExoplanetUploadMethod] = useState<"csv" | "manual">("manual");
 
-  // Dynamic camera position based on view
-  const getCameraPosition = (): [number, number, number] => {
-    switch (view) {
-      case "earth":
-        return [0, 0, 5]; // Closer zoom for Earth
-      case "solar":
-        return [0, 10, 20]; // Medium distance for solar system
-      case "galaxy":
-        return [0, 25, 35]; // Slightly tilted view for galaxy
-      case "universe":
-        return [0, 0, 40]; // Far view for universe
-      case "exoplanet":
-        return [3, 2, 8]; // Zoomed closer with cinematic angle for Saturn
-      default:
-        return [0, 0, 5];
-    }
-  };
-
   return (
     <div className="relative w-full h-screen bg-background">
       {/* Show Model Metrics Page if selected */}
@@ -91,13 +77,14 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
         />
       ) : (
         <>
-          <Canvas camera={{ position: getCameraPosition(), fov: 75 }} key={view}>
+          <Canvas
+            camera={{ position: [0, 25, 35], fov: 75 }}
+            gl={{ powerPreference: "high-performance", antialias: false }}
+          >
+            <CameraController view={view} />
             <ambientLight intensity={0.3} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <Stars radius={300} depth={60} count={5000} factor={7} saturation={0} fade speed={1} />
-            
-            {/* Cinematic camera movement for exoplanet view */}
-            {view === "exoplanet" && <CinematicCamera />}
             
             {/* Particle effects for immersion */}
             {view === "universe" && <ParticleField count={3000} color="#8b5cf6" size={0.3} speed={0.3} />}
