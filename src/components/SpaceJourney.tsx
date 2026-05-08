@@ -22,7 +22,6 @@ import PlanetDetailsView from "./PlanetDetailsView";
 import { ModelMetrics } from "./ModelMetrics";
 import { ModelMetricsPage } from "@/pages/ModelMetricsPage";
 import * as THREE from "three";
-import { exoplanetAPI } from "@/lib/api";
 
 // Cinematic Camera Controller for Exoplanet View
 const CinematicCamera = () => {
@@ -60,26 +59,6 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
   const [showNavigation, setShowNavigation] = useState(true);
   const [showExoplanetExplorer, setShowExoplanetExplorer] = useState(true);
   const [exoplanetUploadMethod, setExoplanetUploadMethod] = useState<"csv" | "manual">("manual");
-  const [apiStatus, setApiStatus] = useState<"checking" | "connected" | "disconnected">("checking");
-
-
-  // Check API health on mount
-  useEffect(() => {
-    const checkAPIHealth = async () => {
-      try {
-        const health = await exoplanetAPI.healthCheck();
-        if (health.status === "healthy" && health.model_loaded) {
-          setApiStatus("connected");
-        } else {
-          setApiStatus("disconnected");
-        }
-      } catch (error) {
-        setApiStatus("disconnected");
-      }
-    };
-    
-    checkAPIHealth();
-  }, []);
 
   // Dynamic camera position based on view
   const getCameraPosition = (): [number, number, number] => {
