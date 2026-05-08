@@ -23,7 +23,6 @@ import { ModelMetrics } from "./ModelMetrics";
 import { ModelMetricsPage } from "@/pages/ModelMetricsPage";
 import * as THREE from "three";
 import { exoplanetAPI } from "@/lib/api";
-import { useToast } from "@/hooks/use-toast";
 
 // Cinematic Camera Controller for Exoplanet View
 const CinematicCamera = () => {
@@ -62,7 +61,7 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
   const [showExoplanetExplorer, setShowExoplanetExplorer] = useState(true);
   const [exoplanetUploadMethod, setExoplanetUploadMethod] = useState<"csv" | "manual">("manual");
   const [apiStatus, setApiStatus] = useState<"checking" | "connected" | "disconnected">("checking");
-  const { toast } = useToast();
+
 
   // Check API health on mount
   useEffect(() => {
@@ -73,24 +72,14 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
           setApiStatus("connected");
         } else {
           setApiStatus("disconnected");
-          toast({
-            title: "API Warning",
-            description: "API is reachable but model is not loaded",
-            variant: "destructive",
-          });
         }
       } catch (error) {
         setApiStatus("disconnected");
-        toast({
-          title: "API Connection Failed",
-          description: "Unable to connect to the prediction API. Some features may be unavailable.",
-          variant: "destructive",
-        });
       }
     };
     
     checkAPIHealth();
-  }, [toast]);
+  }, []);
 
   // Dynamic camera position based on view
   const getCameraPosition = (): [number, number, number] => {
