@@ -4,20 +4,37 @@ import { WifiOff, X } from "lucide-react";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 
+// Ping the root endpoint — root URLs are never blocked by ad blockers.
+// /health was blocked because ad-blocker filter lists flag that path pattern.
+const pingBackend = async (): Promise<boolean> => {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(`${API_BASE_URL}/`, {
+      signal: controller.signal,
+      cache: "no-store",
+    });
+    clearTimeout(timeout);
+    return res.ok;
+  } catch {
+    return false;
+  }
+};
+
 export const BackendStatusToast = () => {
   const [visible, setVisible] = useState(false);
   const [countdown, setCountdown] = useState(50);
 
   useEffect(() => {
     const check = async () => {
-      try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 5000);
-        await fetch(`${API_BASE_URL}/health`, { signal: controller.signal });
-        clearTimeout(timeout);
-      } catch {
-        setVisible(true);
-      }
+      // First attempt
+      const ok = await pingBackend();
+      if (ok) return;
+
+      // Wait 4 s and retry once — covers a slow Render cold start
+      await new Promise((r) => setTimeout(r, 4000));
+      const retry = await pingBackend();
+      if (!retry) setVisible(true);
     };
 
     check();
@@ -25,12 +42,7 @@ export const BackendStatusToast = () => {
 
   useEffect(() => {
     if (!visible) return;
-
-    if (countdown <= 0) {
-      window.location.reload();
-      return;
-    }
-
+    if (countdown <= 0) { window.location.reload(); return; }
     const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
     return () => clearTimeout(timer);
   }, [visible, countdown]);
