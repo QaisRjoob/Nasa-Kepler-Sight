@@ -23,33 +23,53 @@ import { ModelMetrics } from "./ModelMetrics";
 import { ModelMetricsPage } from "@/pages/ModelMetricsPage";
 import * as THREE from "three";
 
-// Moves + animates the camera whenever `view` changes — no Canvas remount needed
+// Animates the camera ONLY while transitioning to a new view.
+// Once the camera arrives it stops, so OrbitControls can work freely.
 const CameraController = ({ view }: { view: ViewState }) => {
   const { camera } = useThree();
-  const targets: Record<string, [number, number, number]> = {
+  const TARGETS: Record<string, [number, number, number]> = {
     earth:     [0,  0,  5],
     solar:     [0, 10, 20],
     galaxy:    [0, 25, 35],
     universe:  [0,  0, 40],
     exoplanet: [3,  2,  8],
   };
-  const target = targets[view] ?? [0, 0, 5];
-  const targetRef = useRef(new THREE.Vector3(...target));
-  useEffect(() => { targetRef.current.set(...target); }, [view]);
+
+  const targetPos    = useRef(new THREE.Vector3(0, 25, 35));
+  const transitioning = useRef(false);
+  const prevView     = useRef(view);
+
+  useEffect(() => {
+    if (prevView.current === view) return;
+    const t = TARGETS[view] ?? [0, 25, 35];
+    targetPos.current.set(t[0], t[1], t[2]);
+    transitioning.current = true;
+    prevView.current = view;
+  }, [view]);
 
   useFrame((state) => {
-    const time = state.clock.elapsedTime;
-    // Cinematic drift for exoplanet view
+    // Exoplanet view has no OrbitControls — keep the cinematic drift running
     if (view === "exoplanet") {
-      targetRef.current.set(
-        3 + Math.sin(time * 0.08) * 0.3,
-        2 + Math.cos(time * 0.1) * 0.2,
-        8
-      );
+      const time = state.clock.elapsedTime;
+      const cx = 3 + Math.sin(time * 0.08) * 0.3;
+      const cy = 2 + Math.cos(time * 0.1)  * 0.2;
+      camera.position.lerp(new THREE.Vector3(cx, cy, 8), 0.04);
+      camera.updateProjectionMatrix();
+      return;
     }
-    camera.position.lerp(targetRef.current, 0.04);
+
+    // For all other views: only move during transition, then stop
+    if (!transitioning.current) return;
+
+    camera.position.lerp(targetPos.current, 0.06);
     camera.updateProjectionMatrix();
+
+    if (camera.position.distanceTo(targetPos.current) < 0.3) {
+      camera.position.copy(targetPos.current);
+      transitioning.current = false;
+    }
   });
+
   return null;
 };
 import { Navigation, X, Eye, Database, FileText, Upload, BarChart3 } from "lucide-react";
