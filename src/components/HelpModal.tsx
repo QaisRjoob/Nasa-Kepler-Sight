@@ -10,7 +10,7 @@ export const HelpModal = () => {
       {/* Floating help button — bottom right */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-20 right-6 z-50 flex items-center justify-center w-12 h-12 rounded-full bg-indigo-600/80 hover:bg-indigo-500 backdrop-blur-md border border-indigo-400/40 shadow-2xl transition-all duration-300 hover:scale-110"
+        className="fixed bottom-[4.5rem] sm:bottom-20 right-4 sm:right-6 z-50 flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-indigo-600/80 hover:bg-indigo-500 backdrop-blur-md border border-indigo-400/40 shadow-2xl transition-all duration-300 hover:scale-110"
         aria-label="Help"
         title="How to use this app"
       >
@@ -36,9 +36,9 @@ export const HelpModal = () => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 30 }}
               transition={{ type: "spring", stiffness: 280, damping: 28 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+              className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 pointer-events-none"
             >
-              <div className="pointer-events-auto relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl border border-white/10 bg-[#0a0a1a]/95 backdrop-blur-xl shadow-2xl text-white">
+              <div className="pointer-events-auto relative w-full sm:max-w-2xl max-h-[90vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl border border-white/10 bg-[#0a0a1a]/98 backdrop-blur-xl shadow-2xl text-white">
                 {/* Header */}
                 <div className="sticky top-0 flex items-center justify-between px-6 py-4 border-b border-white/10 bg-[#0a0a1a]/95 rounded-t-2xl z-10">
                   <div className="flex items-center gap-2">

@@ -56,63 +56,54 @@ export const Dashboard = () => {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
+  const stats = [
+    { label: "Confirmed",      value: confirmedCount,    color: "text-blue-400",  glow: "cosmic-glow",         icon: Database, shadow: "hover:shadow-purple-500/20" },
+    { label: "Candidates",     value: candidateCount,    color: "text-green-400", glow: "text-green-400",      icon: Target,   shadow: "hover:shadow-green-500/20"  },
+    { label: "False Positives",value: falsePositiveCount,color: "text-red-400",   glow: "text-red-400",        icon: XCircle,  shadow: "hover:shadow-red-500/20"    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="absolute top-4 left-2 right-2 sm:top-8 sm:left-8 sm:right-auto z-20 flex gap-2 sm:gap-4 overflow-x-auto pb-1 sm:pb-0"
+      className="absolute top-4 left-2 right-2 sm:top-8 sm:left-8 sm:right-auto z-20"
     >
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-purple-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Database className="w-4 h-4 text-blue-400" />
-            Confirmed
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold cosmic-glow">
-            {confirmedCount > 0 ? confirmedCount.toLocaleString() : "-"}
-          </div>
-          <p className="text-[10px] text-muted-foreground mt-1">
-            {confirmedCount > 0 ? "From your data" : "No data yet"}
-          </p>
-        </CardContent>
-      </Card>
+      {/* ── DESKTOP: horizontal scroll row (unchanged) ── */}
+      <div className="hidden sm:flex gap-4">
+        {stats.map(({ label, value, color, glow, icon: Icon, shadow }) => (
+          <Card key={label} className={`bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl ${shadow} transition-all duration-300 w-[200px] shrink-0`}>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2">
+                <Icon className={`w-4 h-4 ${color}`} />
+                {label}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className={`text-2xl font-bold ${glow}`}>{value > 0 ? value.toLocaleString() : "-"}</div>
+              <p className="text-[10px] text-muted-foreground mt-1">{value > 0 ? "From your data" : "No data yet"}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-green-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Target className="w-4 h-4 text-green-400" />
-            Candidates
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-green-400">
-            {candidateCount > 0 ? candidateCount.toLocaleString() : "-"}
+      {/* ── MOBILE: compact 3-column pill grid ── */}
+      <div className="flex sm:hidden gap-2">
+        {stats.map(({ label, value, color, icon: Icon }) => (
+          <div
+            key={label}
+            className="flex-1 flex flex-col items-center gap-1 px-2 py-2.5 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 shadow-lg"
+          >
+            <Icon className={`w-4 h-4 ${color}`} />
+            <span className={`text-base font-bold leading-none ${color}`}>
+              {value > 0 ? value.toLocaleString() : "—"}
+            </span>
+            <span className="text-[8px] text-gray-500 font-medium text-center leading-tight">
+              {label}
+            </span>
           </div>
-          <p className="text-[10px] text-muted-foreground mt-1">
-            {candidateCount > 0 ? "Under investigation" : "No data yet"}
-          </p>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-card/80 backdrop-blur-lg border-border/50 shadow-2xl hover:shadow-red-500/20 transition-all duration-300 w-[140px] sm:w-[200px] shrink-0">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <XCircle className="w-4 h-4 text-red-400" />
-            False Positives
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-bold text-red-400">
-            {falsePositiveCount > 0 ? falsePositiveCount.toLocaleString() : "-"}
-          </div>
-          <p className="text-[10px] text-muted-foreground mt-1">
-            {falsePositiveCount > 0 ? "Ruled out" : "No data yet"}
-          </p>
-        </CardContent>
-      </Card>
+        ))}
+      </div>
     </motion.div>
   );
 };

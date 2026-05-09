@@ -147,10 +147,11 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
       {view !== "exoplanet" && view !== "planet-details" && (
         <Button
           onClick={() => setView("exoplanet")}
-          className="absolute top-8 right-8 z-30 gap-2 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600"
+          className="absolute top-4 right-4 sm:top-8 sm:right-8 z-30 gap-2 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-xs sm:text-sm px-3 sm:px-4 h-8 sm:h-10"
         >
-          <Database className="w-4 h-4" />
-          Add Exoplanet Data
+          <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+          <span className="hidden xs:inline sm:inline">Add Exoplanet Data</span>
+          <span className="sm:hidden">+ Data</span>
         </Button>
       )}
       
@@ -171,11 +172,11 @@ export const SpaceJourney = ({ hideBoxes = false }: { hideBoxes?: boolean }) => 
         showNavigation ? (
           <button
             onClick={() => setShowNavigation(false)}
-            className="absolute bottom-8 right-8 z-50 inline-flex items-center gap-2 px-4 py-2 bg-background/30 backdrop-blur-sm border border-primary/40 rounded-full hover:bg-background/50 hover:border-primary/70 transition-all duration-300 hover:scale-105"
+            className="absolute bottom-20 right-4 sm:bottom-8 sm:right-8 z-50 inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-background/30 backdrop-blur-sm border border-primary/40 rounded-full hover:bg-background/50 hover:border-primary/70 transition-all duration-300 hover:scale-105"
             title="Hide navigation"
           >
             <X className="w-4 h-4" />
-            <span className="text-sm font-medium">Hide Navigation</span>
+            <span className="text-sm font-medium hidden sm:inline">Hide Navigation</span>
           </button>
         ) : (
           <button

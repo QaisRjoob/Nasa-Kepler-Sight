@@ -43,80 +43,63 @@ export const Controls = ({ currentView, onViewChange }: ControlsProps) => {
     }
   };
 
+  const NAV_ITEMS = [
+    { id: "earth",          icon: Globe,       label: "Earth"     },
+    { id: "solar",          icon: Orbit,       label: "Solar"     },
+    { id: "galaxy",         icon: Sparkles,    label: "Galaxy"    },
+    { id: "universe",       icon: Boxes,       label: "Universe"  },
+    { id: "exoplanet",      icon: Telescope,   label: "Exoplanet" },
+    { id: "planet-details", icon: Eye,         label: "My Planet" },
+    { id: "__test__",       icon: FlaskConical,label: "Test Data" },
+  ] as const;
+
   return (
     <>
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
+      {/* ── DESKTOP: unchanged centered pill (hidden on mobile) ── */}
+      <div className="hidden sm:block absolute bottom-8 left-1/2 -translate-x-1/2 z-50">
         <div className="flex gap-3 p-4 bg-card/80 backdrop-blur-lg rounded-full border border-border shadow-lg">
-          <Button
-            variant={currentView === "earth" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("earth")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Globe className="w-5 h-5" />
-            Earth
-          </Button>
+          <Button variant={currentView === "earth" ? "default" : "outline"} size="lg" onClick={() => onViewChange("earth")} className="gap-2 transition-all hover:scale-105"><Globe className="w-5 h-5" />Earth</Button>
+          <Button variant={currentView === "solar" ? "default" : "outline"} size="lg" onClick={() => onViewChange("solar")} className="gap-2 transition-all hover:scale-105"><Orbit className="w-5 h-5" />Solar System</Button>
+          <Button variant={currentView === "galaxy" ? "default" : "outline"} size="lg" onClick={() => onViewChange("galaxy")} className="gap-2 transition-all hover:scale-105"><Sparkles className="w-5 h-5" />Galaxy</Button>
+          <Button variant={currentView === "universe" ? "default" : "outline"} size="lg" onClick={() => onViewChange("universe")} className="gap-2 transition-all hover:scale-105"><Boxes className="w-5 h-5" />Universe</Button>
+          <Button variant={currentView === "exoplanet" ? "default" : "outline"} size="lg" onClick={() => onViewChange("exoplanet")} className="gap-2 transition-all hover:scale-105"><Telescope className="w-5 h-5" />Exoplanet</Button>
+          <Button variant={currentView === "planet-details" ? "default" : "outline"} size="lg" onClick={() => onViewChange("planet-details")} className="gap-2 transition-all hover:scale-105"><Eye className="w-5 h-5" />My Planet</Button>
+          <Button variant="outline" size="lg" onClick={() => setModalOpen(true)} className="gap-2 transition-all hover:scale-105 border-purple-500/50 text-purple-300 hover:bg-purple-500/20 hover:text-purple-200"><FlaskConical className="w-5 h-5" />Test Data</Button>
+        </div>
+      </div>
 
-          <Button
-            variant={currentView === "solar" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("solar")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Orbit className="w-5 h-5" />
-            Solar System
-          </Button>
-
-          <Button
-            variant={currentView === "galaxy" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("galaxy")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Sparkles className="w-5 h-5" />
-            Galaxy
-          </Button>
-
-          <Button
-            variant={currentView === "universe" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("universe")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Boxes className="w-5 h-5" />
-            Universe
-          </Button>
-
-          <Button
-            variant={currentView === "exoplanet" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("exoplanet")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Telescope className="w-5 h-5" />
-            Exoplanet
-          </Button>
-
-          <Button
-            variant={currentView === "planet-details" ? "default" : "outline"}
-            size="lg"
-            onClick={() => onViewChange("planet-details")}
-            className="gap-2 transition-all hover:scale-105"
-          >
-            <Eye className="w-5 h-5" />
-            My Planet
-          </Button>
-
-          {/* Test Data button */}
-          <Button
-            variant="outline"
-            size="lg"
-            onClick={() => setModalOpen(true)}
-            className="gap-2 transition-all hover:scale-105 border-purple-500/50 text-purple-300 hover:bg-purple-500/20 hover:text-purple-200"
-          >
-            <FlaskConical className="w-5 h-5" />
-            Test Data
-          </Button>
+      {/* ── MOBILE: full-width bottom navigation bar (hidden on desktop) ── */}
+      <div className="sm:hidden absolute bottom-0 left-0 right-0 z-50">
+        <div className="flex bg-[#0a0a18]/95 backdrop-blur-xl border-t border-white/10 shadow-2xl">
+          {NAV_ITEMS.map(({ id, icon: Icon, label }) => {
+            const isActive = id === "__test__" ? false : currentView === id;
+            const isTest   = id === "__test__";
+            return (
+              <button
+                key={id}
+                onClick={() => isTest ? setModalOpen(true) : onViewChange(id as ViewState)}
+                className={`
+                  flex flex-col items-center justify-center gap-0.5
+                  flex-1 min-w-0 py-2.5 px-1 transition-all duration-200 relative
+                  ${isActive
+                    ? "text-white"
+                    : isTest
+                    ? "text-purple-400"
+                    : "text-gray-500"}
+                `}
+              >
+                {isActive && (
+                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary" />
+                )}
+                <div className={`p-1.5 rounded-xl transition-all duration-200 ${isActive ? "bg-primary/20" : isTest ? "bg-purple-500/10" : ""}`}>
+                  <Icon className="w-[18px] h-[18px]" />
+                </div>
+                <span className="text-[9px] font-medium leading-tight tracking-wide truncate w-full text-center px-0.5">
+                  {label}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -138,9 +121,9 @@ export const Controls = ({ currentView, onViewChange }: ControlsProps) => {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.92, y: 24 }}
               transition={{ type: "spring", stiffness: 300, damping: 28 }}
-              className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+              className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4 pointer-events-none"
             >
-              <div className="pointer-events-auto relative w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0a1a]/95 backdrop-blur-xl shadow-2xl text-white overflow-hidden">
+              <div className="pointer-events-auto relative w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl border border-white/10 bg-[#0a0a1a]/98 backdrop-blur-xl shadow-2xl text-white overflow-hidden max-h-[85vh] overflow-y-auto">
 
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
