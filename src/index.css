@@ -143,3 +143,16 @@ All colors MUST be HSL.
   }
 }
 
+/* Hide Lovable AI badge injected by the Lovable browser extension */
+#gpte-widget,
+[id*="lovable"],
+[class*="lovable"],
+[id*="gpt-engineer"],
+[class*="gpt-engineer"],
+iframe[src*="lovable"],
+iframe[src*="gpt-engineer"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
